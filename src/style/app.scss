@@ -1,0 +1,49 @@
+$black: #000;
+$white: #fff;
+$textColor: #121212;
+$lipRed: #ff0067;
+$niceGreen: rgb(7, 255, 222);
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  padding: 1em;
+  color: $textColor;
+}
+
+body {
+  &.layout {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      pink,
+      pink 10px,
+      hotpink 10px,
+      hotpink 12px,
+      pink 12px
+    );
+  }
+}
+
+.layout > * {
+  background: rgba(255, 59, 118, 0.5);
+  border-radius: 0px !important;
+  outline: 1px solid #ff0049;
+}
+
+button {
+  border-radius: 0px !important;
+  background: $black;
+  color: $white;
+
+  &.active {
+    background: $niceGreen;
+    color: $black;
+  }
+}
+
+#tools {
+  position: absolute;
+  top: 0px;
+}
