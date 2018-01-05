@@ -4,8 +4,7 @@
   "description": "An RGB color guessing game",
   "main": "index.js",
   "scripts": {
-    "start":
-      "webpack-dashboard -- webpack-dev-server --history-api-fallback --inline --progress"
+    "start": "webpack-dashboard -- webpack-dev-server --history-api-fallback --inline --progress"
   },
   "repository": {
     "type": "git",
