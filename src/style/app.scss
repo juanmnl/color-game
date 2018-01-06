@@ -12,6 +12,7 @@ body {
 }
 
 body {
+  min-width: 360px;
   color: $textColor;
   background: $bg;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
@@ -51,6 +52,7 @@ button {
   background: $black;
   color: $white;
   cursor: pointer;
+  transition: all 0.3s ease;
 
   &.active {
     background: $niceGreen;
@@ -74,7 +76,8 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2%;
+  font-size: 3.4em;
+  font-weight: 200;
 }
 
 .container {
@@ -87,9 +90,11 @@ h2 {
   flex: 1;
   margin: 1px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .banner {
+  min-width: 360px;
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -109,8 +114,12 @@ h2 {
 
   button {
     width: 100%;
-    border: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
     text-transform: uppercase;
+    &:active {
+      transform: scale(0.95);
+    }
   }
 
   div {
@@ -121,6 +130,7 @@ h2 {
     line-height: 80px;
     text-transform: uppercase;
     font-weight: 900;
+    font-family: monospace;
   }
 }
 
@@ -157,7 +167,6 @@ h2 {
   font-weight: 900;
   position: absolute;
   width: 100%;
-  opacity: 1;
 }
 
 .scream-now {
@@ -167,13 +176,11 @@ h2 {
 button.selected {
   background: $lipRed;
   color: $black;
-  border: 1px solid $black;
 }
 
 button:active {
   background: $lipRed;
   color: $black;
-  border: 1px solid $black;
 }
 
 @keyframes scream {
@@ -188,4 +195,16 @@ button:active {
     opacity: 0;
     transform: scale(100);
   }
+}
+
+.interlace {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: url('/../images/interlace.png') top left repeat;
+  opacity: 0.2;
 }

@@ -10,7 +10,7 @@ toggleLayout.onclick = function() {
   toggleLayout.classList.toggle('active');
 };
 
-// ***************************************
+// **********************************************************
 var squares = document.querySelectorAll('.square');
 var body = document.getElementsByTagName('body')[0];
 var guess = document.getElementById('guess');
@@ -46,7 +46,7 @@ for (let i = 0; i < squares.length; i++) {
     } else {
       this.style.backgroundColor = document.body.style.backgroundColor;
       message.textContent = 'Pffs! Lame!';
-      scream.textContent = 'Oh Nooo!';
+      scream.textContent = 'Nope!';
       scream.classList.add('scream-now');
       setTimeout(function() {
         scream.classList.remove('scream-now');
