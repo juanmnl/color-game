@@ -13,12 +13,28 @@
   <div id="tools">
     <button id="toggleLayout">Layout Mode</button>
   </div>
-  <h1>You think you know RGB?</h1>
+  <h1>So, you know RGB?</h1>
+  <div class="tips">
+    <ul>
+      <li>RGB: rgb(RED|GREEN|BLUE)</li>
+      <li>RANGE: 0 - 255</li>
+      <li>RED: rgb(255, 0, 0)
+        <span class="red"></span>
+      </li>
+      <li>GREEN: rgb(0, 255, 0)
+        <span class="green"></span>
+      </li>
+      <li>BLUE: rgb(0, 0, 255)
+        <span class="blue"></span>
+      </li>
+      <li>COLOR MODEL: ADDITIVE</li>
+    </ul>
+  </div>
   <h2>
     <span id="guess"></span>
   </h2>
-  <div class="banner">
-    <span id="message">Pick the color you 'think' it's the one...</span>
+  <div class="scream">
+    <span id="scream"></span>
   </div>
   <div class="container">
     <div class="square"></div>
@@ -27,6 +43,14 @@
     <div class="square"></div>
     <div class="square"></div>
     <div class="square"></div>
+  </div>
+  <div class="banner">
+    <button id="reset">New Colors</button>
+    <span id="message">Pick the color you "think" it's the one...</span>
+    <div>
+      <button id="easy">Easy</button>
+      <button id="hard" class="selected">Hard</button>
+    </div>
   </div>
 </body>
 
