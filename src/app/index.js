@@ -1,7 +1,5 @@
 import '../style/app.scss';
 
-console.log('Ah! Ah! Ah! You cheater!');
-
 // **********************************************************
 var squares = document.querySelectorAll('.square');
 var body = document.getElementsByTagName('body')[0];
@@ -13,53 +11,52 @@ var scream = document.getElementsByClassName('scream')[0];
 var scoreDisplay = document.querySelector('h1 > span');
 var gamesDisplay = document.querySelector('.board > .games');
 
-// ***** MAIN UI *****
+// ***** Init Config *****
 var numSquares = 6;
-var colors = generateRandomColors(numSquares);
-var pickedColor = pickColor();
-guess.textContent = pickedColor;
+var colors;
+var pickedColor;
 var score = 0;
 var count = 0;
-var games = 1;
-gamesDisplay.textContent = `Game #${games}`;
+var games = 0;
+guess.textContent = pickedColor;
 
-for (let i = 0; i < squares.length; i++) {
-  squares[i].style.backgroundColor = colors[i];
-  squares[i].addEventListener('click', function() {
-    var clickedColor = this.style.backgroundColor;
-    count++;
-    if (clickedColor === pickedColor) {
-      win();
-      if (count === 1) {
-        score += 300;
-      } else if (count === 6) {
-        score += 50;
+init();
+
+function init() {
+  setupModeBtns();
+  setupSquares();
+  reset();
+  resetBtn.addEventListener('click', reset);
+}
+
+function setupSquares() {
+  for (let i = 0; i < squares.length; i++) {
+    squares[i].addEventListener('click', function() {
+      var clickedColor = this.style.backgroundColor;
+      count++;
+      if (clickedColor === pickedColor) {
+        win();
       } else {
-        score += 100;
+        nope();
+        this.style.backgroundColor = body.style.backgroundColor;
       }
-    } else {
-      nope();
-      score -= 100;
-      this.style.backgroundColor = body.style.backgroundColor;
-    }
-    scoreDisplay.textContent = score;
-  });
+      scoreDisplay.textContent = score;
+    });
+  }
 }
 
-// ***** UI CONTROLS *****
-resetBtn.addEventListener('click', reset);
-
-for (let i = 0; i < modeBtns.length; i++) {
-  modeBtns[i].addEventListener('click', function() {
-    modeBtns[0].classList.remove('selected');
-    modeBtns[1].classList.remove('selected');
-    this.classList.add('selected');
-    this.textContent === 'Easy' ? (numSquares = 3) : (numSquares = 6);
-    reset();
-  });
+function setupModeBtns() {
+  for (let i = 0; i < modeBtns.length; i++) {
+    modeBtns[i].addEventListener('click', function() {
+      modeBtns[0].classList.remove('selected');
+      modeBtns[1].classList.remove('selected');
+      this.classList.add('selected');
+      this.textContent === 'Easy' ? (numSquares = 3) : (numSquares = 6);
+      reset();
+    });
+  }
 }
 
-// ***** FUNCTIONS *****
 function reset() {
   colors = generateRandomColors(numSquares);
   pickedColor = pickColor();
@@ -84,12 +81,15 @@ function reset() {
 
 function win() {
   if (count === 1) {
+    score += 300;
     message.textContent = '+ 300';
     screamer('Sweet!', 'white');
   } else if (count === 6) {
+    score += 50;
     message.textContent = '+ 50';
     screamer('You know nothing!', 'white');
   } else {
+    score += 100;
     message.textContent = '+ 100';
     screamer('Winner!', 'white');
   }
@@ -98,6 +98,7 @@ function win() {
 }
 
 function nope() {
+  score -= 100;
   message.textContent = '-100';
   if (count === 3) {
     screamer('You Suck!', 'black');
@@ -133,7 +134,6 @@ function changeColors(color) {
   body.style.backgroundColor = color;
 }
 
-// Shouts a word on click (winner, loser, etc...)
 function screamer(str, color) {
   scream.style.color = color;
   scream.textContent = str;
