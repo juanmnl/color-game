@@ -12,39 +12,16 @@ body {
 }
 
 body {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   min-width: 360px;
   color: $textColor;
   background: $bg;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  &.layout {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      pink,
-      pink 10px,
-      hotpink 10px,
-      hotpink 12px,
-      pink 12px
-    );
-  }
-}
-
-.layout > * {
-  background: rgba(255, 59, 118, 0.5);
-  border-radius: 0px !important;
-  outline: 1px solid #ff0049;
-}
-
-.layout > * > * {
-  background: rgba(255, 59, 118, 0.5);
-  border-radius: 0px !important;
-  outline: 1px solid #ff0049;
-}
-
-.layout > * > * > * {
-  background: rgba(255, 59, 118, 0.5);
-  border-radius: 0px !important;
-  outline: 1px solid #ff0049;
 }
 
 button {
@@ -61,14 +38,10 @@ button {
   }
 }
 
-#tools {
-  position: absolute;
-  top: 0px;
-}
-
 // *******************************
 h1 {
   padding: 5px;
+  flex: 1;
 
   span {
     float: right;
@@ -78,6 +51,7 @@ h1 {
   }
 }
 h2 {
+  flex: 2;
   width: 100%;
   height: 100px;
   text-align: center;
@@ -86,15 +60,22 @@ h2 {
   align-items: center;
   font-size: 3.4em;
   font-weight: 200;
+  margin: 0;
 
   #guess {
     background-color: #fffb5e;
   }
 }
 
+header.title {
+  display: flex;
+  flex-direction: row;
+}
+
 .container {
   display: flex;
   justify-content: space-between;
+  flex: 3;
 }
 
 .square {
@@ -106,9 +87,8 @@ h2 {
 }
 
 .banner {
+  flex: 1;
   min-width: 360px;
-  position: absolute;
-  bottom: 0;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -159,9 +139,17 @@ h2 {
   }
 }
 
+.score-display {
+  flex: 1;
+  text-align: right;
+  padding: 5px;
+  font-size: 3.4em;
+  font-weight: 900;
+}
+
 .tips {
-  margin-bottom: 2%;
-  font-size: 0.8em;
+  flex: 0.5;
+  font-size: 0.7em;
   ul {
     margin: 0;
     padding: 1em;
@@ -172,7 +160,7 @@ h2 {
     height: 10px;
     background-color: #000;
     position: absolute;
-    margin: 5px;
+    margin: 2px;
 
     &.red {
       background-color: red;
@@ -190,13 +178,13 @@ h2 {
   text-align: center;
   text-transform: uppercase;
   font-weight: 900;
-  position: absolute;
+  flex: 1;
   width: 100%;
   font-size: 2em;
 }
 
 .scream-now {
-  animation: 1.6s linear scream;
+  animation: 1.8s ease-in-out scream;
 }
 
 button.selected {

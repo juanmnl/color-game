@@ -8,7 +8,7 @@ var message = document.getElementById('message');
 var resetBtn = document.querySelector('#reset');
 var modeBtns = document.querySelectorAll('.mode');
 var scream = document.getElementsByClassName('scream')[0];
-var scoreDisplay = document.querySelector('h1 > span');
+var scoreDisplay = document.querySelector('.score-display > span');
 var gamesDisplay = document.querySelector('.board > .games');
 
 const game = {
