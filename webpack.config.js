@@ -1,16 +1,19 @@
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const DashboardPlugin = require('webpack-dashboard/plugin');
+
+const PATHS = {
+  app: path.join(__dirname, '/src/app'),
+  build: path.join(__dirname, 'dist')
+};
 
 module.exports = {
-  entry: __dirname + '/src/app/index.js', // Module to start building dependency graph
+  entry: PATHS.app,
   output: {
-    path: __dirname + '/dist', // Folder to store generated bundle
-    filename: 'bundle.js', // Name of generated bundle after build
-    publicPath: '/'
+    path: PATHS.build,
+    filename: 'bundle.js'
   },
   module: {
-    // where we defined file patterns and their loaders
     rules: [
       {
         test: /\.js$/,
@@ -29,7 +32,9 @@ module.exports = {
         use: [
           {
             loader: 'file-loader',
-            options: {}
+            options: {
+              outputPath: path.join(PATHS.build, 'images/')
+            }
           }
         ]
       }
@@ -41,12 +46,16 @@ module.exports = {
       template: __dirname + '/src/public/index.html',
       inject: 'body'
     }),
-    new ExtractTextPlugin('styles.css'), // extract css to a separate file called styles.css
-    new DashboardPlugin()
+    new ExtractTextPlugin('styles.css') // extract css to a separate file called styles.css
   ],
   devServer: {
     // configuration for webpack-dev-server
     contentBase: './src/public', //source of static assets
-    port: 9200 // port to run dev-server
+    port: 9200, // port to run dev-server
+    stats: 'errors-only',
+    overlay: {
+      errors: true,
+      warnings: true
+    }
   }
 };

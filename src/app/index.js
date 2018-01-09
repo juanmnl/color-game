@@ -1,4 +1,4 @@
-import '../style/app.scss';
+import './../style/app.scss';
 
 // **********************************************************
 var squares = document.querySelectorAll('.square');
@@ -11,137 +11,141 @@ var scream = document.getElementsByClassName('scream')[0];
 var scoreDisplay = document.querySelector('h1 > span');
 var gamesDisplay = document.querySelector('.board > .games');
 
-// ***** Init Config *****
-var numSquares = 6;
-var colors;
-var pickedColor;
-var score = 0;
-var count = 0;
-var games = 0;
-guess.textContent = pickedColor;
-
-init();
-
-function init() {
-  setupModeBtns();
-  setupSquares();
-  reset();
-  resetBtn.addEventListener('click', reset);
-}
-
-function setupSquares() {
-  for (let i = 0; i < squares.length; i++) {
-    squares[i].addEventListener('click', function() {
-      var clickedColor = this.style.backgroundColor;
-      count++;
-      if (clickedColor === pickedColor) {
-        win();
+const game = {
+  games: 0,
+  score: 0,
+  count: 0,
+  numSquares: 6,
+  colors: [],
+  pickedColor: '',
+  init: function() {
+    this.setupModeBtns();
+    this.setupSquares();
+    this.reset();
+    resetBtn.addEventListener('click', game.reset);
+  },
+  setupSquares: function() {
+    for (let i = 0; i < squares.length; i++) {
+      squares[i].addEventListener('click', function() {
+        this.style.pointerEvents = '';
+        var clickedColor = this.style.backgroundColor;
+        game.count++;
+        if (clickedColor === game.pickedColor) {
+          game.win();
+          this.style.pointerEvents = 'none';
+          for (let i = 0; i < squares.length; i++) {
+            squares[i].style.pointerEvents = 'none';
+          }
+        } else {
+          game.nope();
+          this.style.pointerEvents = 'none';
+          this.style.backgroundColor = body.style.backgroundColor;
+        }
+        scoreDisplay.textContent = game.score;
+      });
+    }
+  },
+  setupModeBtns: function() {
+    for (let i = 0; i < modeBtns.length; i++) {
+      modeBtns[i].addEventListener('click', function() {
+        modeBtns[0].classList.remove('selected');
+        modeBtns[1].classList.remove('selected');
+        this.classList.add('selected');
+        this.textContent === 'Easy'
+          ? (game.numSquares = 3)
+          : (game.numSquares = 6);
+        game.reset();
+      });
+    }
+  },
+  reset: function() {
+    game.colors = game.generateRandomColors(game.numSquares);
+    game.pickedColor = game.pickColor();
+    game.count = 0;
+    guess.textContent = game.pickedColor;
+    body.style.backgroundColor = '#f5f5f5';
+    for (let i = 0; i < squares.length; i++) {
+      if (game.colors[i]) {
+        squares[i].style.display = 'block';
+        squares[i].style.backgroundColor = game.colors[i];
+        squares[i].style.pointerEvents = '';
       } else {
-        nope();
-        this.style.backgroundColor = body.style.backgroundColor;
+        squares[i].style.display = 'none';
       }
-      scoreDisplay.textContent = score;
-    });
-  }
-}
-
-function setupModeBtns() {
-  for (let i = 0; i < modeBtns.length; i++) {
-    modeBtns[i].addEventListener('click', function() {
-      modeBtns[0].classList.remove('selected');
-      modeBtns[1].classList.remove('selected');
-      this.classList.add('selected');
-      this.textContent === 'Easy' ? (numSquares = 3) : (numSquares = 6);
-      reset();
-    });
-  }
-}
-
-function reset() {
-  colors = generateRandomColors(numSquares);
-  pickedColor = pickColor();
-  count = 0;
-  guess.textContent = pickedColor;
-  body.style.backgroundColor = '#f5f5f5';
-  for (let i = 0; i < squares.length; i++) {
-    if (colors[i]) {
-      squares[i].style.display = 'block';
-      squares[i].style.backgroundColor = colors[i];
+    }
+    resetBtn.textContent = 'New Colors';
+    message.textContent = 'Pick a color';
+    scream.textContent = '';
+    scream.style.color = '';
+    game.games++;
+    gamesDisplay.textContent = `Game #${game.games}`;
+  },
+  pickColor: function() {
+    var random = Math.floor(Math.random() * game.colors.length);
+    return game.colors[random];
+  },
+  generateRandomColors: function(x) {
+    let arr = [];
+    for (let i = 0; i < x; i++) {
+      arr.push(game.randomColor());
+    }
+    return arr;
+  },
+  randomColor: function() {
+    var r = Math.floor(Math.random() * 256);
+    var g = Math.floor(Math.random() * 256);
+    var b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
+  },
+  changeColors: function(color) {
+    for (let i = 0; i < squares.length; i++) {
+      squares[i].style.backgroundColor = color;
+    }
+    body.style.backgroundColor = color;
+  },
+  screamer: function(str, color) {
+    scream.style.color = color;
+    scream.textContent = str;
+    scream.classList.add('scream-now');
+    setTimeout(function() {
+      if (str === 'Nope' || str === 'You Suck!' || str === 'Sad!') {
+        scream.textContent = '';
+      }
+      scream.classList.remove('scream-now');
+    }, 600);
+  },
+  win: function() {
+    if (game.count === 1) {
+      game.score += 300;
+      message.textContent = '+ 300';
+      this.screamer('Sweet!', 'white');
+    } else if (game.count === 6) {
+      game.score += 25;
+      message.textContent = '+ 25';
+      this.screamer('You know nothing!', 'white');
+    } else if (game.count > 3 && game.count < 6) {
+      game.score += 50;
+      message.textContent = '+ 50';
+      this.screamer('Ok!', 'white');
     } else {
-      squares[i].style.display = 'none';
+      game.score += 100;
+      message.textContent = '+ 100';
+      this.screamer('Winner!', 'white');
+    }
+    this.changeColors(game.pickedColor);
+    resetBtn.textContent = 'Play again?';
+  },
+  nope: function() {
+    game.score -= 100;
+    message.textContent = '-100';
+    if (game.count === 3) {
+      this.screamer('You Suck!', 'black');
+    } else if (game.count === 5) {
+      this.screamer('Sad!');
+    } else {
+      this.screamer('Nope', 'black');
     }
   }
-  resetBtn.textContent = 'New Colors';
-  message.textContent = 'Pick a color';
-  scream.textContent = '';
-  scream.style.color = '';
-  games++;
-  gamesDisplay.textContent = `Game #${games}`;
-}
+};
 
-function win() {
-  if (count === 1) {
-    score += 300;
-    message.textContent = '+ 300';
-    screamer('Sweet!', 'white');
-  } else if (count === 6) {
-    score += 50;
-    message.textContent = '+ 50';
-    screamer('You know nothing!', 'white');
-  } else {
-    score += 100;
-    message.textContent = '+ 100';
-    screamer('Winner!', 'white');
-  }
-  changeColors(pickedColor);
-  resetBtn.textContent = 'Play again?';
-}
-
-function nope() {
-  score -= 100;
-  message.textContent = '-100';
-  if (count === 3) {
-    screamer('You Suck!', 'black');
-  } else {
-    screamer('Nope', 'black');
-  }
-}
-
-function pickColor() {
-  var random = Math.floor(Math.random() * colors.length);
-  return colors[random];
-}
-
-function generateRandomColors(x) {
-  let arr = [];
-  for (let i = 0; i < x; i++) {
-    arr.push(randomColor());
-  }
-  return arr;
-}
-
-function randomColor() {
-  var r = Math.floor(Math.random() * 256);
-  var g = Math.floor(Math.random() * 256);
-  var b = Math.floor(Math.random() * 256);
-  return `rgb(${r}, ${g}, ${b})`;
-}
-
-function changeColors(color) {
-  for (let i = 0; i < squares.length; i++) {
-    squares[i].style.backgroundColor = color;
-  }
-  body.style.backgroundColor = color;
-}
-
-function screamer(str, color) {
-  scream.style.color = color;
-  scream.textContent = str;
-  scream.classList.add('scream-now');
-  setTimeout(function() {
-    if (str === 'Nope' || str === 'You Suck!') {
-      scream.textContent = '';
-    }
-    scream.classList.remove('scream-now');
-  }, 600);
-}
+game.init();
